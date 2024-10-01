@@ -42,6 +42,11 @@
             this.OpenMaterialsListTableButton = new System.Windows.Forms.Button();
             this.SaveTableButton = new System.Windows.Forms.Button();
             this.ClearTableButton = new System.Windows.Forms.Button();
+            this.FloorDollorSignLabel = new System.Windows.Forms.Label();
+            this.TotalCostDollorSignLabel = new System.Windows.Forms.Label();
+            this.RoofDollorSignLabel = new System.Windows.Forms.Label();
+            this.OpeningsDollorSignLabel = new System.Windows.Forms.Label();
+            this.WallsDollorSignLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CategoriesTotalsLabel
@@ -162,6 +167,7 @@
             this.SaveTableButton.TabIndex = 12;
             this.SaveTableButton.Text = "Save Table";
             this.SaveTableButton.UseVisualStyleBackColor = true;
+            this.SaveTableButton.Click += new System.EventHandler(this.SaveTableButton_Click);
             // 
             // ClearTableButton
             // 
@@ -171,12 +177,63 @@
             this.ClearTableButton.TabIndex = 13;
             this.ClearTableButton.Text = "Clear Table";
             this.ClearTableButton.UseVisualStyleBackColor = true;
+            this.ClearTableButton.Click += new System.EventHandler(this.ClearTableButton_Click);
+            // 
+            // FloorDollorSignLabel
+            // 
+            this.FloorDollorSignLabel.AutoSize = true;
+            this.FloorDollorSignLabel.Location = new System.Drawing.Point(529, 115);
+            this.FloorDollorSignLabel.Name = "FloorDollorSignLabel";
+            this.FloorDollorSignLabel.Size = new System.Drawing.Size(13, 13);
+            this.FloorDollorSignLabel.TabIndex = 14;
+            this.FloorDollorSignLabel.Text = "$";
+            // 
+            // TotalCostDollorSignLabel
+            // 
+            this.TotalCostDollorSignLabel.AutoSize = true;
+            this.TotalCostDollorSignLabel.Location = new System.Drawing.Point(529, 378);
+            this.TotalCostDollorSignLabel.Name = "TotalCostDollorSignLabel";
+            this.TotalCostDollorSignLabel.Size = new System.Drawing.Size(13, 13);
+            this.TotalCostDollorSignLabel.TabIndex = 15;
+            this.TotalCostDollorSignLabel.Text = "$";
+            // 
+            // RoofDollorSignLabel
+            // 
+            this.RoofDollorSignLabel.AutoSize = true;
+            this.RoofDollorSignLabel.Location = new System.Drawing.Point(529, 300);
+            this.RoofDollorSignLabel.Name = "RoofDollorSignLabel";
+            this.RoofDollorSignLabel.Size = new System.Drawing.Size(13, 13);
+            this.RoofDollorSignLabel.TabIndex = 16;
+            this.RoofDollorSignLabel.Text = "$";
+            // 
+            // OpeningsDollorSignLabel
+            // 
+            this.OpeningsDollorSignLabel.AutoSize = true;
+            this.OpeningsDollorSignLabel.Location = new System.Drawing.Point(529, 237);
+            this.OpeningsDollorSignLabel.Name = "OpeningsDollorSignLabel";
+            this.OpeningsDollorSignLabel.Size = new System.Drawing.Size(13, 13);
+            this.OpeningsDollorSignLabel.TabIndex = 17;
+            this.OpeningsDollorSignLabel.Text = "$";
+            // 
+            // WallsDollorSignLabel
+            // 
+            this.WallsDollorSignLabel.AutoSize = true;
+            this.WallsDollorSignLabel.Location = new System.Drawing.Point(529, 175);
+            this.WallsDollorSignLabel.Name = "WallsDollorSignLabel";
+            this.WallsDollorSignLabel.Size = new System.Drawing.Size(13, 13);
+            this.WallsDollorSignLabel.TabIndex = 18;
+            this.WallsDollorSignLabel.Text = "$";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.WallsDollorSignLabel);
+            this.Controls.Add(this.OpeningsDollorSignLabel);
+            this.Controls.Add(this.RoofDollorSignLabel);
+            this.Controls.Add(this.TotalCostDollorSignLabel);
+            this.Controls.Add(this.FloorDollorSignLabel);
             this.Controls.Add(this.ClearTableButton);
             this.Controls.Add(this.SaveTableButton);
             this.Controls.Add(this.OpenMaterialsListTableButton);
@@ -209,11 +266,16 @@
         private System.Windows.Forms.Button SaveTableButton;
         private System.Windows.Forms.Button ClearTableButton;
         private System.Windows.Forms.Button OpenMaterialsListTableButton;
-        public System.Windows.Forms.TextBox FloorTextBox;
-        public System.Windows.Forms.TextBox RoofTextBox;
-        public System.Windows.Forms.TextBox OpeningsTextBox;
-        public System.Windows.Forms.TextBox WallsTextBox;
-        public System.Windows.Forms.TextBox TotalCostTextBox;
+        private System.Windows.Forms.TextBox FloorTextBox;
+        private System.Windows.Forms.TextBox RoofTextBox;
+        private System.Windows.Forms.TextBox OpeningsTextBox;
+        private System.Windows.Forms.TextBox WallsTextBox;
+        private System.Windows.Forms.TextBox TotalCostTextBox;
+        private System.Windows.Forms.Label FloorDollorSignLabel;
+        private System.Windows.Forms.Label TotalCostDollorSignLabel;
+        private System.Windows.Forms.Label RoofDollorSignLabel;
+        private System.Windows.Forms.Label OpeningsDollorSignLabel;
+        private System.Windows.Forms.Label WallsDollorSignLabel;
     }
 }
 

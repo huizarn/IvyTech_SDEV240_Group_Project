@@ -232,6 +232,6 @@
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button UpdateButton;
-        public System.Windows.Forms.DataGridView DataGridView1;
+        private System.Windows.Forms.DataGridView DataGridView1;
     }
 }
