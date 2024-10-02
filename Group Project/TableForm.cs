@@ -1,8 +1,11 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +16,7 @@ namespace Group_Project
     public partial class TableForm : Form
     {
         private MainForm mainForm;
+        private DataTable table;
         private decimal totalUnitCost = 0; // Field to store the total unit cost
 
         public TableForm(MainForm mainForm)
@@ -30,33 +34,16 @@ namespace Group_Project
             CategoryComboBox.Items.Add("Roof");
 
             // Add columns to the DataGridView
-            DataGridView1.Columns.Add("Category", "Category");
-            DataGridView1.Columns.Add("Item", "Item");
-            DataGridView1.Columns.Add("Material", "Material");
-            DataGridView1.Columns.Add("Description", "Description");
-            DataGridView1.Columns.Add("Quantity", "Quantity");
-            DataGridView1.Columns.Add("UnitCost", "Unit Cost (USD)");
-            DataGridView1.Columns.Add("TotalUnitCost", "Total Unit Cost (USD)"); // Add a new column for total unit cost
-        }
+            table = new DataTable();
+            table.Columns.Add("Category", typeof(String));
+            table.Columns.Add("Item", typeof(String));
+            table.Columns.Add("Material", typeof(String));
+            table.Columns.Add("Description", typeof(String));
+            table.Columns.Add("Quantity", typeof(String));
+            table.Columns.Add("UnitCost", typeof(String));
+            table.Columns.Add("TotalUnitCost", typeof(String)); // Add a new column for total unit cost
 
-        private void CategoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ItemTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MaterialTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DescriptionTextBox_TextChanged(object sender, EventArgs e)
-        {
-
+            DataGridView1.DataSource = table;
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -92,11 +79,11 @@ namespace Group_Project
                 return;
             }
 
-            // Format unit cost to two decimal places and add dollar sign
-            string formattedUnitCost = unitCost.ToString("C2");
+            // Format unit cost to two decimal places
+            unitCost = Convert.ToDecimal(unitCost.ToString("F2"));
 
             // Add a new row to the DataGridView
-            DataGridView1.Rows.Add(category, item, material, description, quantity, formattedUnitCost);
+            table.Rows.Add(category, item, material, description, quantity, unitCost.ToString("C2"));
 
             // Update the total unit cost
             totalUnitCost += unitCost * quantity;
@@ -111,7 +98,28 @@ namespace Group_Project
                 DataGridView1.Rows.Add(null, null, null, null, null, null, totalUnitCost.ToString("C2"));
             }
 
-            // lear the input fields after adding the row
+            //Find what category was selected and update the text box in the main form for that category
+            if (CategoryComboBox.Text == "Floors")
+            {
+                mainForm.UpdateFloorTextBox(unitCost * quantity);
+            }
+            else if (CategoryComboBox.Text == "Walls")
+            {
+                mainForm.UpdateWallsTextBox(unitCost * quantity);
+            }
+            else if (CategoryComboBox.Text == "Openings")
+            {
+                mainForm.UpdateOpeningsTextBox(unitCost * quantity);
+            }
+            else
+            {
+                mainForm.UpdateRoofTextBox(unitCost * quantity);
+            }
+
+            //update the total cost text box in the main form
+            mainForm.UpdateTotalCostTextBox(unitCost * quantity);
+
+            // clear the input fields after adding the row
             CategoryComboBox.Text = "";
             ItemTextBox.Clear();
             MaterialTextBox.Clear();
@@ -120,19 +128,45 @@ namespace Group_Project
             UnitCostTextBox.Clear();
         }
 
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        public void ExportToExcel()
         {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
+
+                for (int i = 1; i <= table.Columns.Count; i++)
+                {
+                    worksheet.Cells[1, i].Value = table.Columns[i - 1].ColumnName;
+                }
+
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    for (int j = 0; j < table.Columns.Count; j++)
+                    {
+                        worksheet.Cells[i + 2, j + 1].Value = table.Rows[i][j];
+                    }
+                }
+
+                string downloadsPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+
+                string filePath = Path.Combine(downloadsPath, "MaterialsCostTable.xlsx");
+
+                FileInfo fileInfo = new FileInfo(filePath);
+                package.SaveAs(fileInfo);
+
+                MessageBox.Show($"File saved to: {filePath}");
+
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
         }
 
-        private void QuantityTextBox_TextChanged(object sender, EventArgs e)
+        public void ClearTable()
         {
-
-        }
-
-        private void UnitCostTextBox_TextChanged(object sender, EventArgs e)
-        {
-
+            //clear the table and reset totalUnitCost
+            table.Clear();
+            totalUnitCost = 0;
         }
     }
 }
