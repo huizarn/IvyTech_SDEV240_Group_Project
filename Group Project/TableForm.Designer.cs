@@ -51,73 +51,88 @@
             // 
             this.CategoryComboBox.FormattingEnabled = true;
             this.CategoryComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.CategoryComboBox.Location = new System.Drawing.Point(186, 94);
+            this.CategoryComboBox.Location = new System.Drawing.Point(248, 116);
+            this.CategoryComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CategoryComboBox.Name = "CategoryComboBox";
-            this.CategoryComboBox.Size = new System.Drawing.Size(121, 21);
+            this.CategoryComboBox.Size = new System.Drawing.Size(160, 24);
             this.CategoryComboBox.TabIndex = 0;
+            this.CategoryComboBox.SelectedIndexChanged += new System.EventHandler(this.CategoryComboBox_SelectedIndexChanged);
             // 
             // CategoryLabel
             // 
             this.CategoryLabel.AutoSize = true;
             this.CategoryLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CategoryLabel.Location = new System.Drawing.Point(215, 75);
+            this.CategoryLabel.Location = new System.Drawing.Point(287, 92);
+            this.CategoryLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CategoryLabel.Name = "CategoryLabel";
-            this.CategoryLabel.Size = new System.Drawing.Size(62, 16);
+            this.CategoryLabel.Size = new System.Drawing.Size(76, 20);
             this.CategoryLabel.TabIndex = 1;
             this.CategoryLabel.Text = "Category";
             // 
             // ItemTextBox
             // 
-            this.ItemTextBox.Location = new System.Drawing.Point(38, 216);
+            this.ItemTextBox.Location = new System.Drawing.Point(51, 266);
+            this.ItemTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ItemTextBox.Name = "ItemTextBox";
-            this.ItemTextBox.Size = new System.Drawing.Size(100, 20);
+            this.ItemTextBox.Size = new System.Drawing.Size(132, 22);
             this.ItemTextBox.TabIndex = 2;
+            this.ItemTextBox.TextChanged += new System.EventHandler(this.ItemTextBox_TextChanged);
             // 
             // ItemLabel
             // 
             this.ItemLabel.AutoSize = true;
             this.ItemLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ItemLabel.Location = new System.Drawing.Point(70, 197);
+            this.ItemLabel.Location = new System.Drawing.Point(93, 242);
+            this.ItemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ItemLabel.Name = "ItemLabel";
-            this.ItemLabel.Size = new System.Drawing.Size(32, 16);
+            this.ItemLabel.Size = new System.Drawing.Size(41, 20);
             this.ItemLabel.TabIndex = 3;
             this.ItemLabel.Text = "Item";
             // 
             // UnitCostTextBox
             // 
-            this.UnitCostTextBox.Location = new System.Drawing.Point(279, 315);
+            this.UnitCostTextBox.Location = new System.Drawing.Point(372, 388);
+            this.UnitCostTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.UnitCostTextBox.Name = "UnitCostTextBox";
-            this.UnitCostTextBox.Size = new System.Drawing.Size(100, 20);
+            this.UnitCostTextBox.Size = new System.Drawing.Size(132, 22);
             this.UnitCostTextBox.TabIndex = 4;
+            this.UnitCostTextBox.TextChanged += new System.EventHandler(this.UnitCostTextBox_TextChanged);
             // 
             // QuantityTextBox
             // 
-            this.QuantityTextBox.Location = new System.Drawing.Point(111, 315);
+            this.QuantityTextBox.Location = new System.Drawing.Point(148, 388);
+            this.QuantityTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.QuantityTextBox.Name = "QuantityTextBox";
-            this.QuantityTextBox.Size = new System.Drawing.Size(100, 20);
+            this.QuantityTextBox.Size = new System.Drawing.Size(132, 22);
             this.QuantityTextBox.TabIndex = 5;
+            this.QuantityTextBox.TextChanged += new System.EventHandler(this.QuantityTextBox_TextChanged);
             // 
             // DescriptionTextBox
             // 
-            this.DescriptionTextBox.Location = new System.Drawing.Point(353, 216);
+            this.DescriptionTextBox.Location = new System.Drawing.Point(471, 266);
+            this.DescriptionTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DescriptionTextBox.Name = "DescriptionTextBox";
-            this.DescriptionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.DescriptionTextBox.Size = new System.Drawing.Size(132, 22);
             this.DescriptionTextBox.TabIndex = 6;
+            this.DescriptionTextBox.TextChanged += new System.EventHandler(this.DescriptionTextBox_TextChanged);
             // 
             // MaterialTextBox
             // 
-            this.MaterialTextBox.Location = new System.Drawing.Point(198, 216);
+            this.MaterialTextBox.Location = new System.Drawing.Point(264, 266);
+            this.MaterialTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaterialTextBox.Name = "MaterialTextBox";
-            this.MaterialTextBox.Size = new System.Drawing.Size(100, 20);
+            this.MaterialTextBox.Size = new System.Drawing.Size(132, 22);
             this.MaterialTextBox.TabIndex = 7;
+            this.MaterialTextBox.TextChanged += new System.EventHandler(this.MaterialTextBox_TextChanged);
             // 
             // UnitCostLabel
             // 
             this.UnitCostLabel.AutoSize = true;
             this.UnitCostLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UnitCostLabel.Location = new System.Drawing.Point(298, 296);
+            this.UnitCostLabel.Location = new System.Drawing.Point(397, 364);
+            this.UnitCostLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.UnitCostLabel.Name = "UnitCostLabel";
-            this.UnitCostLabel.Size = new System.Drawing.Size(60, 16);
+            this.UnitCostLabel.Size = new System.Drawing.Size(79, 20);
             this.UnitCostLabel.TabIndex = 8;
             this.UnitCostLabel.Text = "Unit Cost";
             // 
@@ -125,9 +140,10 @@
             // 
             this.QuantityLabel.AutoSize = true;
             this.QuantityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.QuantityLabel.Location = new System.Drawing.Point(136, 296);
+            this.QuantityLabel.Location = new System.Drawing.Point(181, 364);
+            this.QuantityLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.QuantityLabel.Name = "QuantityLabel";
-            this.QuantityLabel.Size = new System.Drawing.Size(55, 16);
+            this.QuantityLabel.Size = new System.Drawing.Size(71, 20);
             this.QuantityLabel.TabIndex = 9;
             this.QuantityLabel.Text = "Quantity";
             // 
@@ -135,9 +151,10 @@
             // 
             this.DescriptionLabel.AutoSize = true;
             this.DescriptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionLabel.Location = new System.Drawing.Point(367, 197);
+            this.DescriptionLabel.Location = new System.Drawing.Point(489, 242);
+            this.DescriptionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.DescriptionLabel.Name = "DescriptionLabel";
-            this.DescriptionLabel.Size = new System.Drawing.Size(75, 16);
+            this.DescriptionLabel.Size = new System.Drawing.Size(95, 20);
             this.DescriptionLabel.TabIndex = 10;
             this.DescriptionLabel.Text = "Description";
             // 
@@ -145,35 +162,40 @@
             // 
             this.MaterialLabel.AutoSize = true;
             this.MaterialLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaterialLabel.Location = new System.Drawing.Point(222, 197);
+            this.MaterialLabel.Location = new System.Drawing.Point(296, 242);
+            this.MaterialLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.MaterialLabel.Name = "MaterialLabel";
-            this.MaterialLabel.Size = new System.Drawing.Size(55, 16);
+            this.MaterialLabel.Size = new System.Drawing.Size(69, 20);
             this.MaterialLabel.TabIndex = 11;
             this.MaterialLabel.Text = "Material";
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(52, 410);
+            this.AddButton.Location = new System.Drawing.Point(69, 505);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(75, 23);
+            this.AddButton.Size = new System.Drawing.Size(100, 28);
             this.AddButton.TabIndex = 12;
             this.AddButton.Text = "Add";
             this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(367, 410);
+            this.DeleteButton.Location = new System.Drawing.Point(489, 505);
+            this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteButton.Size = new System.Drawing.Size(100, 28);
             this.DeleteButton.TabIndex = 13;
             this.DeleteButton.Text = "Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
             // 
             // UpdateButton
             // 
-            this.UpdateButton.Location = new System.Drawing.Point(202, 410);
+            this.UpdateButton.Location = new System.Drawing.Point(269, 505);
+            this.UpdateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(75, 23);
+            this.UpdateButton.Size = new System.Drawing.Size(100, 28);
             this.UpdateButton.TabIndex = 14;
             this.UpdateButton.Text = "Update";
             this.UpdateButton.UseVisualStyleBackColor = true;
@@ -181,16 +203,19 @@
             // DataGridView1
             // 
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView1.Location = new System.Drawing.Point(525, 2);
+            this.DataGridView1.Location = new System.Drawing.Point(700, 2);
+            this.DataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.Size = new System.Drawing.Size(468, 504);
+            this.DataGridView1.RowHeadersWidth = 51;
+            this.DataGridView1.Size = new System.Drawing.Size(1000, 620);
             this.DataGridView1.TabIndex = 15;
             // 
             // TableForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(992, 506);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(982, 623);
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.DeleteButton);
@@ -207,6 +232,7 @@
             this.Controls.Add(this.ItemTextBox);
             this.Controls.Add(this.CategoryLabel);
             this.Controls.Add(this.CategoryComboBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TableForm";
             this.Text = "Materials List Table";
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
