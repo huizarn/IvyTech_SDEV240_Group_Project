@@ -16,43 +16,40 @@ namespace Group_Project
         public MainForm()
         {
             InitializeComponent();
-
-            FloorTextBox.Text = "0";
-            WallsTextBox.Text = "0";
-            OpeningsTextBox.Text = "0";
-            RoofTextBox.Text = "0";
-            TotalCostTextBox.Text = "0";
+            InitializeTextBoxes();
         }
 
+        //Create and open the TableForm
         private void OpenMaterialsListTableButton_Click(object sender, EventArgs e)
         {
             tableForm = new TableForm(this);
             tableForm.Show();
         }
 
-        public void UpdateFloorTextBox(double Cost)
+        //These 5 Update functions take a cost as it parameter, then adds it to the appropriate TextBox
+        public void UpdateFloorTextBox(decimal cost)
         {
-            FloorTextBox.Text = (double.Parse(FloorTextBox.Text) + Cost).ToString();
+            FloorTextBox.Text = (Convert.ToDecimal(FloorTextBox.Text) + cost).ToString("F2");
         }
 
-        public void UpdateWallsTextBox(double Cost)
+        public void UpdateWallsTextBox(decimal cost)
         {
-            WallsTextBox.Text = (double.Parse(WallsTextBox.Text) + Cost).ToString();
+            WallsTextBox.Text = (Convert.ToDecimal(WallsTextBox.Text) + cost).ToString("F2");
         }
 
-        public void UpdateOpeningsTextBox(double Cost)
+        public void UpdateOpeningsTextBox(decimal cost)
         {
-            OpeningsTextBox.Text = (double.Parse(OpeningsTextBox.Text) + Cost).ToString();
+            OpeningsTextBox.Text = (Convert.ToDecimal(OpeningsTextBox.Text) + cost).ToString("F2");
         }
 
-        public void UpdateRoofTextBox(double Cost)
+        public void UpdateRoofTextBox(decimal cost)
         {
-            RoofTextBox.Text = (double.Parse(RoofTextBox.Text) + Cost).ToString();
+            RoofTextBox.Text = (Convert.ToDecimal(RoofTextBox.Text) + cost).ToString("F2");
         }
 
-        public void UpdateTotalCostTextBox(double Cost)
+        public void UpdateTotalCostTextBox(decimal cost)
         {
-            TotalCostTextBox.Text = (double.Parse(TotalCostTextBox.Text) + Cost).ToString();
+            TotalCostTextBox.Text = (Convert.ToDecimal(TotalCostTextBox.Text) + cost).ToString("F2");
         }
 
         private void SaveTableButton_Click(object sender, EventArgs e)
@@ -62,12 +59,26 @@ namespace Group_Project
 
         private void ClearTableButton_Click(object sender, EventArgs e)
         {
+            //create a message that warns the user that this action is permanent
             DialogResult result = MessageBox.Show("This action cannot be undone. Are you sure you wish to proceed?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-            if (result == DialogResult.OK)
+            if (result == DialogResult.OK)//if the user clicks ok
             {
-
+                tableForm.ClearTable();
+                
+                //reset the textboxes to zero
+                InitializeTextBoxes();
             }
+        }
+
+        private void InitializeTextBoxes()
+        {
+            //set the category text boxes to zero by default
+            FloorTextBox.Text = "0";
+            WallsTextBox.Text = "0";
+            OpeningsTextBox.Text = "0";
+            RoofTextBox.Text = "0";
+            TotalCostTextBox.Text = "0";
         }
     }
 }

@@ -159,6 +159,7 @@
             this.AddButton.TabIndex = 12;
             this.AddButton.Text = "Add";
             this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // DeleteButton
             // 
@@ -183,14 +184,16 @@
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGridView1.Location = new System.Drawing.Point(525, 2);
             this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.Size = new System.Drawing.Size(468, 504);
+            this.DataGridView1.RowHeadersWidth = 51;
+            this.DataGridView1.Size = new System.Drawing.Size(750, 504);
             this.DataGridView1.TabIndex = 15;
             // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(992, 506);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(736, 506);
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.DeleteButton);
