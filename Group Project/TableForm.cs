@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,106 +14,51 @@ namespace Group_Project
     public partial class TableForm : Form
     {
         private MainForm mainForm;
-        private decimal totalUnitCost = 0; // Field to store the total unit cost
 
+        DataTable table;
         public TableForm(MainForm mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
-
-            // Set the DropDownStyle to allow user input
-            CategoryComboBox.DropDownStyle = ComboBoxStyle.DropDown;
-
-            // Add items to the CategoryComboBox
-            CategoryComboBox.Items.Add("Floors");
-            CategoryComboBox.Items.Add("Walls");
-            CategoryComboBox.Items.Add("Openings");
-            CategoryComboBox.Items.Add("Roof");
-
-            // Add columns to the DataGridView
-            DataGridView1.Columns.Add("Category", "Category");
-            DataGridView1.Columns.Add("Item", "Item");
-            DataGridView1.Columns.Add("Material", "Material");
-            DataGridView1.Columns.Add("Description", "Description");
-            DataGridView1.Columns.Add("Quantity", "Quantity");
-            DataGridView1.Columns.Add("UnitCost", "Unit Cost (USD)");
-            DataGridView1.Columns.Add("TotalUnitCost", "Total Unit Cost (USD)"); // Add a new column for total unit cost
         }
 
-        private void CategoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void TableForm_Load(object sender, EventArgs e)
         {
+            table = new DataTable();
+            table.Columns.Add("Category", typeof(string));
+            table.Columns.Add("Item", typeof(string));
+            table.Columns.Add("Material", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("Quantity", typeof(string));
+            table.Columns.Add("Unit Cost", typeof(string));
 
+            DataGridView1.DataSource = table;
         }
 
-        private void ItemTextBox_TextChanged(object sender, EventArgs e)
+        private void UpdateButton_Click(object sender, EventArgs e)
         {
+            int index = DataGridView1.CurrentCell.RowIndex;
+            if (index > -1)
+            {
+                // Optionally validate inputs before updating
 
+                // Update the DataTable
+                table.Rows[index][0] = CategoryComboBox.Text;
+                table.Rows[index][1] = ItemTextBox.Text;
+                table.Rows[index][2] = MaterialTextBox.Text;
+                table.Rows[index][3] = DescriptionTextBox.Text;
+                table.Rows[index][4] = QuantityTextBox.Text;
+                table.Rows[index][5] = UnitCostTextBox.Text;
+
+                // Refresh the DataGridView if necessary (typically not needed if it's bound properly)
+                DataGridView1.Refresh();
+            
+            }
         }
-
-        private void MaterialTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DescriptionTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void AddButton_Click(object sender, EventArgs e)
         {
-            // Get the input values
-            string category = CategoryComboBox.Text;
-            string item = ItemTextBox.Text;
-            string material = MaterialTextBox.Text;
-            string description = DescriptionTextBox.Text;
-            int quantity;
-            decimal unitCost;
-
-            // Check if all fields are empty
-            if (string.IsNullOrWhiteSpace(category) && string.IsNullOrWhiteSpace(item) &&
-                string.IsNullOrWhiteSpace(material) && string.IsNullOrWhiteSpace(description) &&
-                string.IsNullOrWhiteSpace(QuantityTextBox.Text) && string.IsNullOrWhiteSpace(UnitCostTextBox.Text))
-            {
-                MessageBox.Show("Please fill in all fields before adding.");
-                return;
-            }
-
-            // Validate and parse quantity
-            if (!int.TryParse(QuantityTextBox.Text, out quantity))
-            {
-                MessageBox.Show("Please enter a valid whole number for Quantity.");
-                return;
-            }
-
-            // Validate and parse unit cost
-            if (!decimal.TryParse(UnitCostTextBox.Text, out unitCost))
-            {
-                MessageBox.Show("Please enter a valid decimal number for Unit Cost.");
-                return;
-            }
-
-            // Format unit cost to two decimal places and add dollar sign
-            string formattedUnitCost = unitCost.ToString("C2");
-
-            // Add a new row to the DataGridView
-            DataGridView1.Rows.Add(category, item, material, description, quantity, formattedUnitCost);
-
-            // Update the total unit cost
-            totalUnitCost += unitCost * quantity;
-
-            // Add or update the total unit cost row
-            if (DataGridView1.Rows.Count > 1 && DataGridView1.Rows[DataGridView1.Rows.Count - 1].Cells[0].Value == null)
-            {
-                DataGridView1.Rows[DataGridView1.Rows.Count - 1].Cells["TotalUnitCost"].Value = totalUnitCost.ToString("C2");
-            }
-            else
-            {
-                DataGridView1.Rows.Add(null, null, null, null, null, null, totalUnitCost.ToString("C2"));
-            }
-
-            // lear the input fields after adding the row
-            CategoryComboBox.Text = "";
+            table.Rows.Add(CategoryComboBox.Text, ItemTextBox.Text, MaterialTextBox.Text, DescriptionTextBox.Text, QuantityTextBox.Text, UnitCostTextBox.Text);
+            
             ItemTextBox.Clear();
             MaterialTextBox.Clear();
             DescriptionTextBox.Clear();
@@ -120,19 +66,33 @@ namespace Group_Project
             UnitCostTextBox.Clear();
         }
 
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            int index = DataGridView1.CurrentCell.RowIndex;
+            table.Rows[index].Delete();
+        }
+
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void QuantityTextBox_TextChanged(object sender, EventArgs e)
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            this.linkLabel1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://www.homedepot.com/");
         }
 
-        private void UnitCostTextBox_TextChanged(object sender, EventArgs e)
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            this.linkLabel1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://www.lowes.com/");
+        }
 
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.linkLabel1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://www.menards.com/main/home.html");
         }
     }
 }
