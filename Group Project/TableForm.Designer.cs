@@ -182,27 +182,21 @@
             this.UpdateButton.TabIndex = 14;
             this.UpdateButton.Text = "Update";
             this.UpdateButton.UseVisualStyleBackColor = true;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click_1);
             // 
             // DataGridView1
             // 
-            this.DataGridView1.AllowUserToAddRows = false;
-            this.DataGridView1.AllowUserToDeleteRows = false;
-            this.DataGridView1.AllowUserToResizeColumns = false;
-            this.DataGridView1.AllowUserToResizeRows = false;
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView1.ColumnHeadersVisible = false;
             this.DataGridView1.Location = new System.Drawing.Point(525, 2);
             this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.ReadOnly = true;
-            this.DataGridView1.Size = new System.Drawing.Size(468, 504);
+            this.DataGridView1.RowHeadersWidth = 51;
+            this.DataGridView1.Size = new System.Drawing.Size(750, 504);
             this.DataGridView1.TabIndex = 15;
-            this.DataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(215, 436);
+            this.linkLabel1.Location = new System.Drawing.Point(59, 465);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(50, 13);
             this.linkLabel1.TabIndex = 16;
@@ -213,7 +207,7 @@
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(215, 458);
+            this.linkLabel2.Location = new System.Drawing.Point(215, 465);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(50, 13);
             this.linkLabel2.TabIndex = 17;
@@ -224,7 +218,7 @@
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(215, 484);
+            this.linkLabel3.Location = new System.Drawing.Point(377, 465);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(50, 13);
             this.linkLabel3.TabIndex = 18;
@@ -236,7 +230,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(992, 506);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(736, 506);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
@@ -258,7 +253,6 @@
             this.Controls.Add(this.CategoryComboBox);
             this.Name = "TableForm";
             this.Text = "Materials List Table";
-            this.Load += new System.EventHandler(this.TableForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -282,7 +276,7 @@
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button UpdateButton;
-        public System.Windows.Forms.DataGridView DataGridView1;
+        private System.Windows.Forms.DataGridView DataGridView1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
