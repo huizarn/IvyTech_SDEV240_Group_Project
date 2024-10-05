@@ -1,4 +1,4 @@
-﻿using OfficeOpenXml;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,8 +24,8 @@ namespace Group_Project
             InitializeComponent();
             this.mainForm = mainForm;
 
-            // Set the DropDownStyle to allow user input
-            CategoryComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+            // Set the DropDownStyle to prevent user input
+            CategoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Add items to the CategoryComboBox
             CategoryComboBox.Items.Add("Floors");
@@ -41,6 +41,7 @@ namespace Group_Project
             table.Columns.Add("Description", typeof(String));
             table.Columns.Add("Quantity", typeof(String));
             table.Columns.Add("UnitCost", typeof(String));
+            table.Columns.Add("Cost", typeof(String)); // Add new column for Cost
             table.Columns.Add("TotalUnitCost", typeof(String)); // Add a new column for total unit cost
 
             DataGridView1.DataSource = table;
@@ -82,11 +83,14 @@ namespace Group_Project
             // Format unit cost to two decimal places
             unitCost = Convert.ToDecimal(unitCost.ToString("F2"));
 
+            // Calculate the cost
+            decimal cost = unitCost * quantity;
+
             // Add a new row to the DataGridView
-            table.Rows.Add(category, item, material, description, quantity, unitCost.ToString("C2"));
+            table.Rows.Add(category, item, material, description, quantity, unitCost.ToString("C2"), cost.ToString("C2"));
 
             // Update the total unit cost
-            totalUnitCost += unitCost * quantity;
+            totalUnitCost += cost;
 
             // Add or update the total unit cost row
             if (DataGridView1.Rows.Count > 1 && DataGridView1.Rows[DataGridView1.Rows.Count - 1].Cells[0].Value == null)
@@ -95,45 +99,46 @@ namespace Group_Project
             }
             else
             {
-                DataGridView1.Rows.Add(null, null, null, null, null, null, totalUnitCost.ToString("C2"));
+                DataGridView1.Rows.Add(null, null, null, null, null, null, null, totalUnitCost.ToString("C2"));
             }
 
-            //Find what category was selected and update the text box in the main form for that category
+            // Find what category was selected and update the text box in the main form for that category
             if (CategoryComboBox.Text == "Floors")
             {
-                mainForm.UpdateFloorTextBox(unitCost * quantity);
+                mainForm.UpdateFloorTextBox(cost);
             }
             else if (CategoryComboBox.Text == "Walls")
             {
-                mainForm.UpdateWallsTextBox(unitCost * quantity);
+                mainForm.UpdateWallsTextBox(cost);
             }
             else if (CategoryComboBox.Text == "Openings")
             {
-                mainForm.UpdateOpeningsTextBox(unitCost * quantity);
+                mainForm.UpdateOpeningsTextBox(cost);
             }
             else
             {
-                mainForm.UpdateRoofTextBox(unitCost * quantity);
+                mainForm.UpdateRoofTextBox(cost);
             }
 
-            //update the total cost text box in the main form
-            mainForm.UpdateTotalCostTextBox(unitCost * quantity);
+            // Update the total cost text box in the main form
+            mainForm.UpdateTotalCostTextBox(cost);
 
-            // clear the input fields after adding the row
-            CategoryComboBox.Text = "";
+            // Clear the input fields after adding the row
+            CategoryComboBox.SelectedIndex = -1; // Set ComboBox to no selection
             ItemTextBox.Clear();
             MaterialTextBox.Clear();
             DescriptionTextBox.Clear();
             QuantityTextBox.Clear();
             UnitCostTextBox.Clear();
         }
+
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-
+            // Implement update logic if needed
         }
 
-            public void ExportToExcel()
-            {   
+        public void ExportToExcel()
+        {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using (ExcelPackage package = new ExcelPackage())
@@ -168,7 +173,7 @@ namespace Group_Project
 
         public void ClearTable()
         {
-            //clear the table and reset totalUnitCost
+            // Clear the table and reset totalUnitCost
             table.Clear();
             totalUnitCost = 0;
         }
@@ -190,16 +195,13 @@ namespace Group_Project
 
                 // Refresh the DataGridView if necessary (typically not needed if it's bound properly)
                 DataGridView1.Refresh();
-
             }
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            {
-                int index = DataGridView1.CurrentCell.RowIndex;
-                table.Rows[index].Delete();
-            }
+            int index = DataGridView1.CurrentCell.RowIndex;
+            table.Rows[index].Delete();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -214,16 +216,16 @@ namespace Group_Project
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Specify that the link was visited.
-            this.linkLabel1.LinkVisited = true;
+            this.linkLabel2.LinkVisited = true;
 
             // Navigate to a URL.
             System.Diagnostics.Process.Start("https://www.lowes.com/");
         }
-        
+
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Specify that the link was visited.
-            this.linkLabel1.LinkVisited = true;
+            this.linkLabel3.LinkVisited = true;
 
             // Navigate to a URL.
             System.Diagnostics.Process.Start("https://www.menards.com/main/home.html");
