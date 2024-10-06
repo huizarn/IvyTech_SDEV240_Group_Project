@@ -17,15 +17,13 @@ namespace Group_Project
     {
         private MainForm mainForm;
         private DataTable table;
-        private decimal totalUnitCost = 0; // Field to store the total unit cost
+        private decimal floorCost = 0, wallsCost = 0, openingsCost = 0, roofCost = 0, totalUnitCost = 0; // Fields to store the cost of categories as well as total cost
 
         public TableForm(MainForm mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
 
-            // Set the DropDownStyle to prevent user input
-            CategoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Add items to the CategoryComboBox
             CategoryComboBox.Items.Add("Floors");
@@ -42,7 +40,6 @@ namespace Group_Project
             table.Columns.Add("Quantity", typeof(String));
             table.Columns.Add("UnitCost", typeof(String));
             table.Columns.Add("Cost", typeof(String)); // Add new column for Cost
-            table.Columns.Add("TotalUnitCost", typeof(String)); // Add a new column for total unit cost
 
             DataGridView1.DataSource = table;
         }
@@ -58,9 +55,9 @@ namespace Group_Project
             decimal unitCost;
 
             // Check if all fields are empty
-            if (string.IsNullOrWhiteSpace(category) && string.IsNullOrWhiteSpace(item) &&
-                string.IsNullOrWhiteSpace(material) && string.IsNullOrWhiteSpace(description) &&
-                string.IsNullOrWhiteSpace(QuantityTextBox.Text) && string.IsNullOrWhiteSpace(UnitCostTextBox.Text))
+            if (string.IsNullOrWhiteSpace(category) || string.IsNullOrWhiteSpace(item) ||
+                string.IsNullOrWhiteSpace(material) || string.IsNullOrWhiteSpace(description) ||
+                string.IsNullOrWhiteSpace(QuantityTextBox.Text) || string.IsNullOrWhiteSpace(UnitCostTextBox.Text))
             {
                 MessageBox.Show("Please fill in all fields before adding.");
                 return;
@@ -92,49 +89,37 @@ namespace Group_Project
             // Update the total unit cost
             totalUnitCost += cost;
 
-            // Add or update the total unit cost row
-            if (DataGridView1.Rows.Count > 1 && DataGridView1.Rows[DataGridView1.Rows.Count - 1].Cells[0].Value == null)
-            {
-                DataGridView1.Rows[DataGridView1.Rows.Count - 1].Cells["TotalUnitCost"].Value = totalUnitCost.ToString("C2");
-            }
-            else
-            {
-                DataGridView1.Rows.Add(null, null, null, null, null, null, null, totalUnitCost.ToString("C2"));
-            }
+            //update the total cost text box
+            TotalCostTextBox.Text = totalUnitCost.ToString();
 
-            // Find what category was selected and update the text box in the main form for that category
+            // Find what category was selected and update the cost value stored for that category
             if (CategoryComboBox.Text == "Floors")
             {
-                mainForm.UpdateFloorTextBox(cost);
+                floorCost += cost;
             }
             else if (CategoryComboBox.Text == "Walls")
             {
-                mainForm.UpdateWallsTextBox(cost);
+                wallsCost += cost;
             }
             else if (CategoryComboBox.Text == "Openings")
             {
-                mainForm.UpdateOpeningsTextBox(cost);
+                openingsCost += cost;
             }
             else
             {
-                mainForm.UpdateRoofTextBox(cost);
+                roofCost += cost;
             }
 
-            // Update the total cost text box in the main form
-            mainForm.UpdateTotalCostTextBox(cost);
+            // Update the category text boxes in the main form
+            mainForm.UpdateCategories(floorCost, wallsCost, openingsCost, roofCost, totalUnitCost);
 
             // Clear the input fields after adding the row
-            CategoryComboBox.SelectedIndex = -1; // Set ComboBox to no selection
             ItemTextBox.Clear();
             MaterialTextBox.Clear();
             DescriptionTextBox.Clear();
             QuantityTextBox.Clear();
             UnitCostTextBox.Clear();
-        }
-
-        private void UpdateButton_Click(object sender, EventArgs e)
-        {
-            // Implement update logic if needed
+            CategoryComboBox.SelectedIndex = -1;//set the category combo box to empty
         }
 
         public void ExportToExcel()
@@ -145,11 +130,13 @@ namespace Group_Project
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
+                //add the column names to the excel worksheet
                 for (int i = 1; i <= table.Columns.Count; i++)
                 {
                     worksheet.Cells[1, i].Value = table.Columns[i - 1].ColumnName;
                 }
 
+                //add all the rows in the data table to the excel worksheet
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
                     for (int j = 0; j < table.Columns.Count; j++)
@@ -158,16 +145,26 @@ namespace Group_Project
                     }
                 }
 
+                int totalRow = table.Rows.Count + 2;//find the row below the last one in the data table
+                
+                //add total cost to the excel worksheet in the row below the last row in the data table
+                worksheet.Cells[totalRow, 6].Value = "Total Cost";
+                worksheet.Cells[totalRow, 7].Value = TotalCostTextBox.Text;
+
+                //get the path to the users downloads folder and assign it to a variable
                 string downloadsPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
 
+                //combine the path to the downloads folder with the name of the file to get the path the file will be saved to
                 string filePath = Path.Combine(downloadsPath, "MaterialsCostTable.xlsx");
 
+                //save the file
                 FileInfo fileInfo = new FileInfo(filePath);
                 package.SaveAs(fileInfo);
 
-                MessageBox.Show($"File saved to: {filePath}");
-
+                //open the file
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+
+                MessageBox.Show($"File saved to: {filePath}");
             }
         }
 
@@ -175,33 +172,169 @@ namespace Group_Project
         {
             // Clear the table and reset totalUnitCost
             table.Clear();
+            floorCost = 0;
+            wallsCost = 0;
+            openingsCost = 0;
+            roofCost = 0;
             totalUnitCost = 0;
         }
 
         private void UpdateButton_Click_1(object sender, EventArgs e)
         {
-            int index = DataGridView1.CurrentCell.RowIndex;
+            int index = 0;
+
+            //ensure a row is selected before trying to update and throw an error if one is not
+            if (DataGridView1.CurrentCell != null)
+            {
+                index = DataGridView1.CurrentCell.RowIndex;
+            }
+            else
+            {
+                MessageBox.Show("Please ensure you have a row selected before trying to use the update button.");
+                return;
+            }
+
             if (index > -1)
             {
-                // Optionally validate inputs before updating
+                int quantity;
+                decimal unitCost;
+
+                // Validate and parse quantity
+                if (QuantityTextBox.Text != "")//ignore trying to parse if the text box is empty
+                {
+                    if (!int.TryParse(QuantityTextBox.Text, out quantity))
+                    {
+                        MessageBox.Show("Please enter a valid whole number for Quantity.");
+                        return;
+                    }
+                }
+
+                // Validate and parse unit cost
+                if (UnitCostTextBox.Text != "")//ignore trying to parse if the text box is empty
+                {
+                    if (!decimal.TryParse(UnitCostTextBox.Text, out unitCost))
+                    {
+                        MessageBox.Show("Please enter a valid decimal number for Unit Cost.");
+                        return;
+                    }
+                }
 
                 // Update the DataTable
-                table.Rows[index][0] = CategoryComboBox.Text;
-                table.Rows[index][1] = ItemTextBox.Text;
-                table.Rows[index][2] = MaterialTextBox.Text;
-                table.Rows[index][3] = DescriptionTextBox.Text;
-                table.Rows[index][4] = QuantityTextBox.Text;
-                table.Rows[index][5] = UnitCostTextBox.Text;
+                if (ItemTextBox.Text != "")//if a text box is empty, dont update the value (so the user doesn't have to fill every field when updating)
+                {
+                    table.Rows[index][1] = ItemTextBox.Text;
+                }
+                if (MaterialTextBox.Text != "")
+                {
+                    table.Rows[index][2] = MaterialTextBox.Text;
+                }
+                if (DescriptionTextBox.Text != "")
+                {
+                    table.Rows[index][3] = DescriptionTextBox.Text;
+                }
+                if (QuantityTextBox.Text != "")
+                {
+                    table.Rows[index][4] = QuantityTextBox.Text;
+                }
+                if (UnitCostTextBox.Text != "")
+                {
+                    table.Rows[index][5] = decimal.Parse(UnitCostTextBox.Text).ToString("C2");
+                }
+
+                //set the unit cost and cost from the data table to a string and remove the first value from the string so the $ is removed from them and they can
+                //be converted to decimal
+                string unitCostString = table.Rows[index][5].ToString();
+                string correctedUnitCost = unitCostString.Substring(1);
+                string oldCost = table.Rows[index][6].ToString();
+                string correctedOldCost = oldCost.Substring(1);
+
+                //set costChange as the new cost to be updated to minus the old cost
+                decimal costChange = (Convert.ToInt32(table.Rows[index][4]) * Convert.ToDecimal(correctedUnitCost) - Convert.ToDecimal(correctedOldCost));
+
+                //update totalUnitcost based on cost change and update total cost text box
+                totalUnitCost += costChange;
+                TotalCostTextBox.Text = totalUnitCost.ToString();
+
+                // Find what category the updated row had in it and update the cost value stored for that category
+                if (table.Rows[index][0].ToString() == "Floors")
+                {
+                    floorCost += costChange;
+                }
+                else if (table.Rows[index][0].ToString() == "Walls")
+                {
+                    wallsCost += costChange;
+                }
+                else if (table.Rows[index][0].ToString() == "Openings")
+                {
+                    openingsCost += costChange;
+                }
+                else
+                {
+                    roofCost += costChange;
+                }
+
+                mainForm.UpdateCategories(floorCost, wallsCost, openingsCost, roofCost, totalUnitCost);// Update the category text boxes in the main form
+
+                //set the cost to its new value based on the new quantity and unit cost
+                table.Rows[index][6] = (Convert.ToInt32(table.Rows[index][4]) * Convert.ToDecimal(correctedUnitCost)).ToString("C2");
 
                 // Refresh the DataGridView if necessary (typically not needed if it's bound properly)
                 DataGridView1.Refresh();
+
+                // Clear the input fields after updating the row
+                ItemTextBox.Clear();
+                MaterialTextBox.Clear();
+                DescriptionTextBox.Clear();
+                QuantityTextBox.Clear();
+                UnitCostTextBox.Clear();
+                CategoryComboBox.SelectedIndex = -1;//set the category combo box to empty
             }
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            int index = DataGridView1.CurrentCell.RowIndex;
-            table.Rows[index].Delete();
+            //ensure a row is selected before trying to delete and throw an error if one is not
+            int index = 0;
+
+            if (DataGridView1.CurrentCell != null)
+            {
+                index = DataGridView1.CurrentCell.RowIndex;
+            }
+            else
+            {
+                MessageBox.Show("Please ensure you have a row selected before trying to use the delete button.");
+                return;
+            }
+
+            //set the cost of the row to be deleted to a string and remove the first value of the string so the $ is removed and it can be parsed to a decimal value
+            string cost = table.Rows[index][6].ToString();
+            string correctedCost = cost.Substring(1);
+
+            // Find what category the to be deleted row had in it and update the cost value stored for that category
+            if (table.Rows[index][0].ToString() == "Floors")
+            {
+                floorCost -= decimal.Parse(correctedCost);
+            }
+            else if (table.Rows[index][0].ToString() == "Walls")
+            {
+                wallsCost -= decimal.Parse(correctedCost);
+            }
+            else if (table.Rows[index][0].ToString() == "Openings")
+            {
+                openingsCost -= decimal.Parse(correctedCost);
+            }
+            else
+            {
+                roofCost -= decimal.Parse(correctedCost);
+            }
+
+            totalUnitCost -= decimal.Parse(correctedCost);//update the total unit cost
+
+            mainForm.UpdateCategories(floorCost, wallsCost, openingsCost, roofCost, totalUnitCost);// Update the category text boxes in the main form
+
+            TotalCostTextBox.Text = totalUnitCost.ToString();//update the total cost text box
+
+            table.Rows[index].Delete();//delete the row
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -229,6 +362,23 @@ namespace Group_Project
 
             // Navigate to a URL.
             System.Diagnostics.Process.Start("https://www.menards.com/main/home.html");
+        }
+
+        //this function gives a warning if the user tries to close the tableform, and resets the forms if they do
+        private void TableForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var result = MessageBox.Show("If you close this window now, the tables data will be lost. Are you sure you wish to continue?",
+                                         "Close Confirmation",
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            mainForm.ResetForms();
         }
     }
 }
